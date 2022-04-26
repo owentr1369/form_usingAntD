@@ -1,78 +1,114 @@
-import React, { useState } from "react";
+import React from "react";
 import "antd/dist/antd.css";
-import { Form, Input, Button, DatePicker } from "antd";
-import { type } from "@testing-library/user-event/dist/type";
-
-const FormSizeDemo = () => {
-  const url = "";
-  const [componentSize, setComponentSize] = useState("default");
-
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+import { Form, Input, Button } from "antd";
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16,
+  },
+};
+const url = "";
+class NewsForm extends React.Component {
+  onFinish = (values) => {
+    console.log(JSON.stringify(values));
   };
-  const [data, setData] = useState({
-    title: "",
-    description: "",
-    content: "",
-    thumbnailUrl: "",
-    url: "",
-  });
-  const formRef = React.createRef();
-  const onFinish = (values) => {
-    console.log(values);
-  };
-  const onReset = () => {
+  onReset = () => {
     this.formRef.current.resetFields();
   };
-  return (
-    <Form
-      labelCol={{
-        span: 4,
-      }}
-      wrapperCol={{
-        span: 14,
-      }}
-      layout="horizontal"
-      initialValues={{
-        size: componentSize,
-      }}
-      onValuesChange={onFormLayoutChange}
-      size={componentSize}
-      onFinish={(values) => {
-        console.log({ values });
-      }}
-    >
-      <Form.Item rules={[{ required: true }]} label="Title">
-        <Input placeholder="Add title" />
-      </Form.Item>
-      <Form.Item rules={[{ required: true }]} label="Description">
-        <Input placeholder="Add description" />
-      </Form.Item>
-      <Form.Item rules={[{ required: true }]} label="Content">
-        <Input placeholder="Add content" />
-      </Form.Item>
-      <Form.Item
-        rules={[
-          { required: true, message: "Please add thumnail URL" },
-          { type: "url", message: "Please enter a valid URL" },
-        ]}
-        label="Thumbnail URL"
+  onFill = () => {
+    this.formRef.current.setFieldsValue({
+      note: "Hello world!",
+      gender: "male",
+    });
+  };
+  // title: string;
+  // description: string;
+  // content: string;
+  // thumbnailUrl: string;
+  // url: string;
+  render() {
+    return (
+      <Form
+        {...layout}
+        ref={this.formRef}
+        name="control-ref"
+        onFinish={this.onFinish}
       >
-        <Input placeholder="Add thumbnail URL" />
-      </Form.Item>
-      <Form.Item rules={[{ required: true }]} label="URL">
-        <Input placeholder="Add news URL" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="link" htmlType="button" onClick={onFinish}>
-          Save
-        </Button>
-        <Button htmlType="button" onClick={onReset}>
-          Clear
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-};
+        <Form.Item
+          name="title"
+          label="Title"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="Add title" />
+        </Form.Item>
+        <Form.Item
+          name="description"
+          label="Description"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="Add description" />
+        </Form.Item>
+        <Form.Item
+          name="content"
+          label="Content"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="Add Content" />
+        </Form.Item>
+        <Form.Item
+          name="thumbnailUrl"
+          label="Thumbnail URL"
+          rules={[
+            {
+              required: true,
+              type: "url",
+              message: "Please enter a valid url",
+            },
+          ]}
+        >
+          <Input placeholder="Add thumbnail URL" />
+        </Form.Item>
+        <Form.Item
+          name="url"
+          label="URL"
+          rules={[
+            {
+              required: true,
+              type: "url",
+              message: "Please enter a valid url",
+            },
+          ]}
+        >
+          <Input placeholder="Add URL" />
+        </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+  }
+}
 
-export default () => <FormSizeDemo />;
+export default NewsForm;
